@@ -1,0 +1,12 @@
+<Alloy>
+	<Window class="container">		
+		<NavigationGroup id="nav" platform="ios">
+            <Window id="win2" title="Red Window" backgroundColor="red">
+				<Button customVar="works!" onClick="testing">Click Me</Button>
+				<Button onClick="upload" top="60">Upload Image</Button>
+				<Label id="uploadProgress" top="90"></Label>
+				<Button onClick="openNewWindow" top="10">open new window</Button>
+            </Window>
+        </NavigationGroup>
+	</Window>
+</Alloy>

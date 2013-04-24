@@ -19,6 +19,12 @@ module.exports = function(_data, window, options) {
     var direction = options.direction || "left";
     var directionChanged = false;
     "left" != direction && "right" != direction && (direction = "left");
+    var win = Ti.UI.createWindow({
+        width: "100%",
+        backgroundColor: "transparent",
+        tabBarHidden: true,
+        touchEnabled: false
+    });
     var view = Ti.UI.createView({
         width: "100%",
         height: options.height || 20,
@@ -50,7 +56,8 @@ module.exports = function(_data, window, options) {
     });
     options.location && ("bottom" === options.location ? view.bottom = 0 : "top" === options.location && (view.top = 0));
     view.add(label);
-    window.add(view);
+    win.add(view);
+    window.add(win);
     animation.addEventListener("complete", function() {
         if ("left" == direction) {
             label.setLeft(320);

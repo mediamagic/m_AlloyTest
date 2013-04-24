@@ -10,6 +10,13 @@ module.exports = function(_data, window, options) {
 	if(direction != 'left' && direction != 'right')
 		direction = 'left';
 	
+	var win = Ti.UI.createWindow({
+		width:'100%',
+		backgroundColor:'transparent',
+		tabBarHidden:true,
+		touchEnabled:false
+	});
+	
 	var view = Ti.UI.createView({
 	    width:'100%',
 	    height:options.height || 20,
@@ -60,7 +67,8 @@ module.exports = function(_data, window, options) {
 	}
 			
 	view.add(label);
-	window.add(view);
+	win.add(view);
+	window.add(win);
 	
 	animation.addEventListener('complete',function() {    		
 		if(direction == 'left') {

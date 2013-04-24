@@ -5,7 +5,6 @@ $.index.title = 'window';
 // function test(e) {
 	// m.test(e.source.customVar);
 // }
-Alloy.Globals.Resource = require('resource');
 
 function upload(e) {
 	var dialog = Ti.UI.createOptionDialog({
@@ -40,23 +39,6 @@ function openNewWindow(e) {
 
 $.index.open();
 
-var handshake = new Alloy.Globals.Resource('/handshake');
-function performHandshake() {
-	handshake.get({}, function(err, res) {
-		if(!err) { 
-			Alloy.CFG.csrf = res.csrf;
-		} else {
-			setTimeout(function() {
-				performHandshake();	
-			}, 2000);			
-		}
-	});
-}
-
-performHandshake();
-
-Alloy.Globals.socket = require('socket.io');
-
 var news = [
 	'this is news row number 1',
 	'this is news row number 2',
@@ -83,6 +65,7 @@ var marquee = new Marquee(news, $.index, {
 	location:'bottom',
 	direction:'left'
 });
+
 
 Alloy.Globals.socket.io.on('START_MARQUEE', function (data) {
 	marquee.start();

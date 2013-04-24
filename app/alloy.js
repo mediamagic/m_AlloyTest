@@ -9,3 +9,22 @@
 // object. For example:
 //
 // Alloy.Globals.someGlobalFunction = function(){};
+
+Alloy.Globals.Resource = require('resource');
+Alloy.Globals.socket = require('socket.io');
+
+var handshake = new Alloy.Globals.Resource('/handshake');
+
+function performHandshake() {
+	handshake.get({}, function(err, res) {
+		if(!err) { 
+			Alloy.CFG.csrf = res.csrf;
+		} else {
+			setTimeout(function() {
+				performHandshake();	
+			}, 2000);			
+		}
+	});
+}
+
+performHandshake();

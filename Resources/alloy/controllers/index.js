@@ -26,13 +26,6 @@ function Controller() {
             animated: true
         });
     }
-    function performHandshake() {
-        handshake.get({}, function(err, res) {
-            err ? setTimeout(function() {
-                performHandshake();
-            }, 2e3) : Alloy.CFG.csrf = res.csrf;
-        });
-    }
     require("alloy/controllers/BaseController").apply(this, Array.prototype.slice.call(arguments));
     arguments[0] ? arguments[0]["__parentSymbol"] : null;
     arguments[0] ? arguments[0]["$model"] : null;
@@ -86,12 +79,8 @@ function Controller() {
     exports.destroy = function() {};
     _.extend($, $.__views);
     $.index.title = "window";
-    Alloy.Globals.Resource = require("resource");
     Alloy.Globals.navgroup = $.nav;
     $.index.open();
-    var handshake = new Alloy.Globals.Resource("/handshake");
-    performHandshake();
-    Alloy.Globals.socket = require("socket.io");
     var news = [ "this is news row number 1", "this is news row number 2", "this is news row number 3", "this is news row number 4", "this is news row number 5" ];
     var Marquee = require("marquee");
     var marquee = new Marquee(news, $.index, {
@@ -102,6 +91,24 @@ function Controller() {
         location: "bottom",
         direction: "left"
     });
+    var marquee1 = new Marquee(news, $.index, {
+        backgroundColor: "#000",
+        color: "#fff",
+        height: 20,
+        duration: 9e3,
+        location: "top",
+        direction: "left"
+    });
+    var marquee2 = new Marquee(news, $.index, {
+        backgroundColor: "#000",
+        color: "#fff",
+        height: 20,
+        duration: 9e3,
+        direction: "left"
+    });
+    marquee.start();
+    marquee1.start();
+    marquee2.start();
     Alloy.Globals.socket.io.on("START_MARQUEE", function() {
         marquee.start();
     });

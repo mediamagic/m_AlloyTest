@@ -91,24 +91,6 @@ function Controller() {
         location: "bottom",
         direction: "left"
     });
-    var marquee1 = new Marquee(news, $.index, {
-        backgroundColor: "#000",
-        color: "#fff",
-        height: 20,
-        duration: 9e3,
-        location: "top",
-        direction: "left"
-    });
-    var marquee2 = new Marquee(news, $.index, {
-        backgroundColor: "#000",
-        color: "#fff",
-        height: 20,
-        duration: 9e3,
-        direction: "left"
-    });
-    marquee.start();
-    marquee1.start();
-    marquee2.start();
     Alloy.Globals.socket.io.on("START_MARQUEE", function() {
         marquee.start();
     });

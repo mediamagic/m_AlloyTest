@@ -1,4 +1,10 @@
 eclipse.preferences.version=1
+provisioning_profiles/adhoc/3EB9926A-122A-4243-BFED-C100A96D3676/appid=il.co.mmdev.*
+provisioning_profiles/adhoc/3EB9926A-122A-4243-BFED-C100A96D3676/name=mmdev iOS (ad-hoc)
+provisioning_profiles/adhoc/3EB9926A-122A-4243-BFED-C100A96D3676/uuid=3EB9926A-122A-4243-BFED-C100A96D3676
+provisioning_profiles/adhoc/854D5E8C-AD00-4F3E-BB60-DEAA080426C5/appid=il.co.mmdev.*
+provisioning_profiles/adhoc/854D5E8C-AD00-4F3E-BB60-DEAA080426C5/name=mmdev iOS ad-hoc (sahar)
+provisioning_profiles/adhoc/854D5E8C-AD00-4F3E-BB60-DEAA080426C5/uuid=854D5E8C-AD00-4F3E-BB60-DEAA080426C5
 provisioning_profiles/development/40A3E34A-57E6-4DD8-B8B8-B19925079444/appid=*
 provisioning_profiles/development/40A3E34A-57E6-4DD8-B8B8-B19925079444/name=mmdev iOS
 provisioning_profiles/development/40A3E34A-57E6-4DD8-B8B8-B19925079444/uuid=40A3E34A-57E6-4DD8-B8B8-B19925079444

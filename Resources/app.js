@@ -10,7 +10,7 @@ var Alloy = require("alloy"), _ = Alloy._, Backbone = Alloy.Backbone;
 
 Alloy.Globals.Resource = require("resource");
 
-Alloy.Globals.socket = require("socket.io");
+Alloy.Globals.socket = require("socket.io")(true);
 
 var handshake = new Alloy.Globals.Resource("/handshake");
 

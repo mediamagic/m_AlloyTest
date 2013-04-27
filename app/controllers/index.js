@@ -1,5 +1,14 @@
 //var m = require('module');
 
+$.index.orientationModes = [
+	Titanium.UI.PORTRAIT,
+    Titanium.UI.UPSIDE_PORTRAIT,
+    Titanium.UI.LANDSCAPE_LEFT,
+    Titanium.UI.LANDSCAPE_RIGHT
+    //Titanium.UI.FACE_UP,
+    //Titanium.UI.FACE_DOWN
+];
+
 $.index.title = 'window';
 
 // function test(e) {
@@ -65,7 +74,6 @@ var marquee = new Marquee(news, $.index, {
 	location:'bottom',
 	direction:'left'
 });
-
 
 Alloy.Globals.socket.io.on('START_MARQUEE', function (data) {
 	marquee.start();

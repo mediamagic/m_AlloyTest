@@ -18,7 +18,7 @@ function Controller() {
     $.__views.btnRecord = Ti.UI.createButton({
         title: "Hold To Talk",
         id: "btnRecord",
-        top: "60"
+        top: "80"
     });
     $.__views.newwindow.add($.__views.btnRecord);
     exports.destroy = function() {};
@@ -41,10 +41,12 @@ function Controller() {
     $.btnRecord.addEventListener("touchstart", function() {
         Titanium.Media.audioSessionMode = Ti.Media.AUDIO_SESSION_MODE_RECORD;
         mic.start();
+        Ti.Media.startMicrophoneMonitor();
     });
     $.btnRecord.addEventListener("touchend", function() {
         $.btnRecord.enabled = false;
         var file = mic.stop();
+        Ti.Media.stopMicrophoneMonitor();
         var fileName = new Date().getTime().toString() + ".wav";
         Records.upload({
             file: file.blob,
@@ -56,6 +58,11 @@ function Controller() {
             $.btnRecord.enabled = true;
         }, function() {});
     });
+    setTimeout(function() {
+        var peak = Ti.Media.peakMicrophonePower;
+        var avg = Ti.Media.averageMicrophonePower;
+        $.label.text = "seconds\npeak power: " + peak + "\navg power: " + avg;
+    }, 200);
     Alloy.Globals.socket.io.on("RECIEVE_SOUND", function(data) {
         Titanium.Media.audioSessionMode = Ti.Media.AUDIO_SESSION_MODE_PLAYBACK;
         sound = Ti.Media.createSound({

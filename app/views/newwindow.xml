@@ -1,6 +1,6 @@
 <Alloy>
 	<Window title="new window" backgroundColor="blue">
 		<Label id="label" top="10"></Label>
-		<Button id="btnRecord" top="60">Hold To Talk</Button>
+		<Button id="btnRecord" top="80">Hold To Talk</Button>
 	</Window>
 </Alloy>

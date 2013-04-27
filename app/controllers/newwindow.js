@@ -20,12 +20,16 @@ var mic = Ti.Media.createAudioRecorder({
 
 $.btnRecord.addEventListener('touchstart', function(e) {
 	Titanium.Media.audioSessionMode = Ti.Media.AUDIO_SESSION_MODE_RECORD;
+	
 	mic.start();
+	Ti.Media.startMicrophoneMonitor();	
 });
 
 $.btnRecord.addEventListener('touchend', function(e) {
 	$.btnRecord.enabled = false;
-	var file = mic.stop();	
+	
+	var file = mic.stop();		
+	Ti.Media.stopMicrophoneMonitor();
 	var fileName = (new Date()).getTime().toString() + '.wav';
 
 	Records.upload({file:file.blob, fileName:fileName}, function(err, res) {
@@ -37,6 +41,13 @@ $.btnRecord.addEventListener('touchend', function(e) {
     	//$.label.text = percents + '%';
     });	
 });
+
+setTimeout(function()
+{
+        var peak = Ti.Media.peakMicrophonePower;
+        var avg = Ti.Media.averageMicrophonePower;
+        $.label.text = 'seconds\npeak power: '+peak+'\navg power: '+avg;
+}, 200);
 
 Alloy.Globals.socket.io.on('RECIEVE_SOUND', function (data) {
 	Titanium.Media.audioSessionMode = Ti.Media.AUDIO_SESSION_MODE_PLAYBACK;

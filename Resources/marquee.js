@@ -1,7 +1,26 @@
 module.exports = function(_data, window, options) {
     function showMarquee() {
         if (animating && data.length > 0) {
-            label.text = data[dataIndex];
+            view.remove(label);
+            "left" == direction ? labelOptions = {
+                left: width,
+                width: "auto",
+                textAlign: Ti.UI.TEXT_ALIGNMENT_LEFT,
+                font: font,
+                color: color,
+                text: data[dataIndex]
+            } : "right" == direction && (labelOptions = {
+                right: width,
+                width: "auto",
+                textAlign: Ti.UI.TEXT_ALIGNMENT_RIGHT,
+                font: font,
+                color: color,
+                text: data[dataIndex]
+            });
+            label = Titanium.UI.createLabel();
+            label.updateLayout(labelOptions);
+            setAnimationValue();
+            view.add(label);
             setTimeout(function() {
                 label.animate(animation);
             }, 100);
@@ -13,11 +32,43 @@ module.exports = function(_data, window, options) {
             }, 100);
         }
     }
+    function setAnimationValue() {
+        var newWidth = label.toImage().width;
+        animationValue = -newWidth;
+        label.setWidth(newWidth);
+        adjustDuration(newWidth);
+        if ("left" == direction) {
+            animation.setLeft(animationValue);
+            animation.setRight(null);
+        } else if ("right" == direction) {
+            animation.setLeft(null);
+            animation.setRight(animationValue);
+        }
+    }
+    function adjustDuration(labelWidth) {
+        duration = options.duration || 5e3;
+        var dif = 0;
+        if (width > labelWidth) {
+            dif = width - labelWidth;
+            duration -= 10 * dif;
+        } else if (labelWidth > width) {
+            dif = labelWidth - width;
+            duration += 10 * dif;
+        }
+        animation.setDuration(duration);
+    }
     var data = _data || [];
     var dataIndex = 0;
+    var font = options.font || {
+        fontSize: 13
+    };
+    var color = options.color || "#fff";
+    var duration = options.duration || 5e3;
     var animating = false;
+    var width = Titanium.Platform.displayCaps.platformWidth;
+    var animationValue = -width;
     var direction = options.direction || "left";
-    var directionChanged = false;
+    var settingsChanged = false;
     "left" != direction && "right" != direction && (direction = "left");
     var win = Ti.UI.createWindow({
         width: "100%",
@@ -32,25 +83,10 @@ module.exports = function(_data, window, options) {
         opacity: 0
     });
     var label = Titanium.UI.createLabel();
+    var labelOptions = null;
     var animation = Titanium.UI.createAnimation({
-        curve: Titanium.UI.ANIMATION_CURVE_LINEAR,
-        duration: options.duration || 5e3
+        curve: Titanium.UI.ANIMATION_CURVE_LINEAR
     });
-    if ("left" == direction) {
-        label.updateLayout({
-            left: 320,
-            width: "100%",
-            color: options.color || "#fff"
-        });
-        animation.setLeft(-320);
-    } else if ("right" == direction) {
-        label.updateLayout({
-            right: 320,
-            width: "100%",
-            color: options.color || "#fff"
-        });
-        animation.setRight(-320);
-    }
     var fade = Titanium.UI.createAnimation({
         duration: 1e3
     });
@@ -59,23 +95,9 @@ module.exports = function(_data, window, options) {
     win.add(view);
     window.add(win);
     animation.addEventListener("complete", function() {
-        if ("left" == direction) {
-            label.setLeft(320);
-            label.setRight(null);
-        } else if ("right" == direction) {
-            label.setLeft(null);
-            label.setRight(320);
-        }
-        if (directionChanged) {
-            directionChanged = false;
-            if ("right" == direction) {
-                animation.setLeft(null);
-                animation.setRight(-320);
-            }
-            if ("left" == direction) {
-                animation.setLeft(-320);
-                animation.setRight(null);
-            }
+        if (settingsChanged) {
+            settingsChanged = false;
+            width = Titanium.Platform.displayCaps.platformWidth;
         }
         dataIndex++;
         dataIndex >= data.length && (dataIndex = 0);
@@ -83,6 +105,9 @@ module.exports = function(_data, window, options) {
     });
     fade.addEventListener("complete", function() {
         animating && showMarquee();
+    });
+    Ti.Gesture.addEventListener("orientationchange", function() {
+        settingsChanged = true;
     });
     return {
         start: function() {
@@ -106,18 +131,7 @@ module.exports = function(_data, window, options) {
         setDirection: function(_direction) {
             if ("left" == _direction || "right" == _direction) {
                 direction = _direction;
-                directionChanged = true;
-                if (!animating) if ("left" == direction) {
-                    label.setLeft(320);
-                    label.setRight(null);
-                    animation.setLeft(-320);
-                    animation.setRight(null);
-                } else if ("right" == direction) {
-                    label.setLeft(null);
-                    label.setRight(320);
-                    animation.setLeft(null);
-                    animation.setRight(-320);
-                }
+                settingsChanged = true;
             }
         }
     };

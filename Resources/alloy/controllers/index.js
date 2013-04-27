@@ -78,6 +78,7 @@ function Controller() {
     $.__views.index.add($.__views.nav);
     exports.destroy = function() {};
     _.extend($, $.__views);
+    $.index.orientationModes = [ Titanium.UI.PORTRAIT, Titanium.UI.UPSIDE_PORTRAIT, Titanium.UI.LANDSCAPE_LEFT, Titanium.UI.LANDSCAPE_RIGHT ];
     $.index.title = "window";
     Alloy.Globals.navgroup = $.nav;
     $.index.open();

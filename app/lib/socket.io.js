@@ -23,10 +23,6 @@ function socketModule(autoConnect) {
 	}
 }
 
-initIO.on('connect,disconnect', function () {
-	console.log('nice!');
-});
-
 initIO.on('connect', function () {
     initIO.emit('DEVICE_CONNECTION', {deviceId:Ti.Platform.getId(), deviceName:Ti.Platform.getUsername()});
 });

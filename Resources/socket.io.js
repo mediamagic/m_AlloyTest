@@ -1,5 +1,5 @@
-function socketModule(makeConnection) {
-    makeConnection && initIO.socket.connect();
+function socketModule(autoConnect) {
+    autoConnect && initIO.socket.connect();
     return {
         io: initIO,
         connect: function() {
@@ -26,10 +26,6 @@ var initIO = io.connect(Alloy.CFG.host, {
     reconnect: false,
     "force new connection": false,
     "auto connect": false
-});
-
-initIO.on("connect,disconnect", function() {
-    console.log("nice!");
 });
 
 initIO.on("connect", function() {
